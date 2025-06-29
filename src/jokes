@@ -1,0 +1,12 @@
+const jokes = [
+  "That roll had less luck than a black cat on Friday the 13th.",
+  "Are you rolling dice or flipping pancakes?",
+  "I've seen better rolls at a sushi bar.",
+  "Even the RNG gods are laughing at that one.",
+  "You'd have better odds finding a unicorn than rolling a triple.",
+  "Ever thought of switching careers? Maybe dice rolling isn't it. 😅",
+  "That roll was so bad, the dice asked for a redo.",
+  "Not even loaded dice could save that attempt.",
+  "Las Vegas just banned you for being too unlucky.",
+  "Try blowing on the dice next time — or just praying harder.",
+];

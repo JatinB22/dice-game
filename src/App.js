@@ -1,73 +1,97 @@
 import React, { useState } from 'react';
-import DiceFace from './components/DiceFace';
 import './App.css';
+import DiceFace from './components/DiceFace';  // Corrected import path
 
-function App() {
-  const [dice1, setDice1] = useState(1);
-  const [dice2, setDice2] = useState(1);
-  const [dice3, setDice3] = useState(1);
+const App = () => {
+  const [dice, setDice] = useState([1, 1, 1]);
+  const [isRolling, setIsRolling] = useState(false);
+  const [isTriple, setIsTriple] = useState(false);
+  const [isDouble, setIsDouble] = useState(false);
+  const [quote, setQuote] = useState('');
+  const [isLoadingQuote, setIsLoadingQuote] = useState(false);
+  
+  // New state variables to track rolls, doubles, and triples
+  const [numRolls, setNumRolls] = useState(0);
+  const [numDoubles, setNumDoubles] = useState(0);
+  const [numTriples, setNumTriples] = useState(0);
 
-  const [rolls, setRolls] = useState(0);
-  const [isRolling, setIsRolling] = useState(0);
-  const [doubleCount, setDoubleCount] = useState(0);
-  const [tripleCount, setTripleCount] = useState(0);
-
+  // Roll the dice function
   const rollDice = () => {
-  const audio = new Audio('/sounds/roll.mp3');
-  audio.play();
+    setIsRolling(true);
+    setIsTriple(false);
+    setIsDouble(false);
+    setQuote('');
+    
+    const newDice = [
+      Math.floor(Math.random() * 6) + 1,
+      Math.floor(Math.random() * 6) + 1,
+      Math.floor(Math.random() * 6) + 1,
+    ];
 
-  setIsRolling(true);
+    setDice(newDice);
 
-  setTimeout(() => {
-    const d1 = Math.floor(Math.random() * 6) + 1;
-    const d2 = Math.floor(Math.random() * 6) + 1;
-    const d3 = Math.floor(Math.random() * 6) + 1;
+    const allSame = newDice[0] === newDice[1] && newDice[1] === newDice[2];
+    const twoSame = newDice[0] === newDice[1] || newDice[1] === newDice[2] || newDice[0] === newDice[2];
 
-    setDice1(d1);
-    setDice2(d2);
-    setDice3(d3);
+    if (allSame) {
+      setIsTriple(true);
+      setIsDouble(false);
+      setNumTriples(numTriples + 1);
+    } else if (twoSame) {
+      setIsDouble(true);
+      setIsTriple(false);
+      setNumDoubles(numDoubles + 1);
+    } else {
+      // Fetching a random quote if no win (double/triple)
+      setIsLoadingQuote(true);
+      fetch('https://quotes-db.vercel.app/api/random')
+        .then(res => res.json())
+        .then(data => {
+          setQuote(`You didn’t win, but here’s a thought anyway.\n '“${data.quote}” — ${data.author}`);
+        })
+        .catch(err => {
+          console.error('Quote fetch failed:', err);
+          setQuote('You didn’t win, but here’s a thought anyway.');
+        })
+        .finally(() => setIsLoadingQuote(false));
+    }
 
-    const isTriple = d1 === d2 && d2 === d3;
-    const isDouble = !isTriple && (d1 === d2 || d1 === d3 || d2 === d3);
-
-    if (isTriple) setTripleCount(prev => prev + 1);
-    else if (isDouble) setDoubleCount(prev => prev + 1);
-
-    setRolls(prev => prev + 1);
+    // Increment the number of rolls
+    setNumRolls(numRolls + 1);
     setIsRolling(false);
-  }, 300);
-};
-
-  const isTriple = dice1 === dice2 && dice2 === dice3;
-  const isDouble =
-    !isTriple &&
-    (dice1 === dice2 || dice1 === dice3 || dice2 === dice3);
+  };
 
   return (
     <div className="App">
-      <h1>🎲 Roll the Dice</h1>
+      <h1>🎲 Roll the Dice Game</h1>
       <div className="dice-container">
-        <DiceFace value={dice1} isRolling={isRolling} />
-        <DiceFace value={dice2} isRolling={isRolling} />
-        <DiceFace value={dice3} isRolling={isRolling} />
+        {dice.map((num, index) => (
+          <DiceFace key={index} number={num} isRolling={isRolling} />
+        ))}
       </div>
-      <button onClick={rollDice}>Roll</button>
+      <button onClick={rollDice} disabled={isRolling}>
+        {isRolling ? 'Rolling...' : 'Roll the Dice'}
+      </button>
 
-      {isTriple ? (
-        <p className="win-text">You rolled a Triple! 🎉</p>
-      ) : isDouble ? (
-        <p className="win-text">You rolled a Double! 🎉</p>
-      ) : (
-        <p className="win-text">Try again!! 😅</p>
-      )}
+      <div className="result-text">
+        {isTriple ? (
+          <p className="win-text">You rolled a Triple! 🎉</p>
+        ) : isDouble ? (
+          <p className="win-text">You rolled a Double! 🎉</p>
+        ) : isLoadingQuote ? (
+          <p className="joke-text">🌀 Finding you a quote...</p>
+        ) : (
+          <p className="joke-text">{quote || 'Rolling for wisdom...'}</p>
+        )}
+      </div>
 
       <div className="scoreboard">
-        <p>Total rolls: {rolls}</p>
-        <p>Doubles: {doubleCount}</p>
-        <p>Triples: {tripleCount}</p>
+        <p>Number of Rolls: {numRolls}</p>
+        <p>Number of Doubles: {numDoubles}</p>
+        <p>Number of Triples: {numTriples}</p>
       </div>
     </div>
   );
-}
+};
 
 export default App;

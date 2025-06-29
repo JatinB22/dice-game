@@ -1,9 +1,13 @@
 .dice {
   width: 90px;
   height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 10px;
   transition: transform 0.3s ease;
 }
+
 .dice.rolling {
   transform: rotate(360deg);
 }

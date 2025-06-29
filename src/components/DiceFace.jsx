@@ -1,33 +1,22 @@
+import React from 'react';
 import './DiceFace.css';
 
-const DiceFace = ({ value, isRolling }) => {
-  const dots = {
-    1: [[1, 1]],
-    2: [[0, 0], [2, 2]],
-    3: [[0, 0], [1, 1], [2, 2]],
-    4: [[0, 0], [0, 2], [2, 0], [2, 2]],
-    5: [[0, 0], [0, 2], [1, 1], [2, 0], [2, 2]],
-    6: [[0, 0], [0, 1], [0, 2], [2, 0], [2, 1], [2, 2]],
+const DiceFace = ({ number, isRolling }) => {
+  // Map dice numbers to CSS.GG dice icon classes
+  const diceIcons = {
+    1: 'gg-dice-1',
+    2: 'gg-dice-2',
+    3: 'gg-dice-3',
+    4: 'gg-dice-4',
+    5: 'gg-dice-5',
+    6: 'gg-dice-6',
   };
 
   return (
-    <svg
-      className={`dice ${isRolling ? 'rolling' : ''}`}
-      viewBox="0 0 120 120"
-    >
-      <rect width="120" height="120" rx="15" fill="#fff" stroke="#000" strokeWidth="4" />
-      {dots[value].map(([row, col], idx) => (
-        <circle
-          key={idx}
-          cx={30 + col * 30}
-          cy={30 + row * 30}
-          r="8"
-          fill="black"
-        />
-      ))}
-    </svg>
+    <div className={`dice ${isRolling ? 'rolling' : ''}`}>
+      <i className={`gg ${diceIcons[number]}`} style={{ fontSize: '100px', color: '#444' }}></i>
+    </div>
   );
 };
-
 
 export default DiceFace;

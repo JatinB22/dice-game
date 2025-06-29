@@ -1,3 +1,4 @@
+/* src/App.css */
 .App {
   text-align: center;
   padding: 2rem 1rem;
@@ -7,7 +8,6 @@
 .dice-container {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap; /* allow wrap on mobile */
   gap: 10px;
   margin: 20px 0;
 }
@@ -23,10 +23,12 @@ button {
   margin-top: 1rem;
   transition: background 0.2s;
 }
+
 button:disabled {
   background: gray;
   cursor: not-allowed;
 }
+
 button:hover:not(:disabled) {
   background: navy;
 }
@@ -40,6 +42,17 @@ button:hover:not(:disabled) {
 .scoreboard {
   font-size: 1rem;
   margin-top: 20px;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.scoreboard p {
+  margin: 5px 0;
 }
 
 /* 🎯 Mobile Responsiveness */
@@ -61,4 +74,16 @@ button:hover:not(:disabled) {
     width: 100%;
     font-size: 1rem;
   }
+}
+
+.joke-text {
+  color: #444;
+  font-style: italic;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+  white-space: pre-line; /* This ensures newlines are respected */
 }
