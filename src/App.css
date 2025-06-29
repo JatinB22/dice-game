@@ -1,0 +1,64 @@
+.App {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-family: sans-serif;
+}
+
+.dice-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* allow wrap on mobile */
+  gap: 10px;
+  margin: 20px 0;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  background: royalblue;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+button:disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+button:hover:not(:disabled) {
+  background: navy;
+}
+
+.win-text {
+  color: green;
+  font-size: 1.1rem;
+  margin: 1.5rem 0;
+}
+
+.scoreboard {
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+/* 🎯 Mobile Responsiveness */
+@media (max-width: 600px) {
+  .dice-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .win-text {
+    font-size: 1rem;
+  }
+
+  .scoreboard {
+    font-size: 0.95rem;
+  }
+
+  button {
+    width: 100%;
+    font-size: 1rem;
+  }
+}

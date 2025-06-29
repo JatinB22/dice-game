@@ -1,0 +1,16 @@
+.dice {
+  width: 90px;
+  height: 90px;
+  margin: 10px;
+  transition: transform 0.3s ease;
+}
+.dice.rolling {
+  transform: rotate(360deg);
+}
+
+@media (max-width: 600px) {
+  .dice {
+    width: 70px;
+    height: 70px;
+  }
+}
